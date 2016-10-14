@@ -6,17 +6,20 @@ exports.seed = function(knex, Promise) {
         // Inserts seed entries
         knex('comments').insert({
           users_id: 1,
-          title: 'You are awesome! - 1',
+          posts_id: 1,
+          comment_title: 'You are awesome! - 1',
           comment:'Everything you touch is gold.',
         }),
         knex('comments').insert({
           users_id: 2,
-          title: 'You are okay. - 2',
+          posts_id: 1,
+          comment_title: 'You are okay. - 2',
           comment:'Cool story, bro.',
         }),
         knex('comments').insert({
           users_id: 3,
-          title: 'You suck! - 3',
+          posts_id: 1,
+          comment_title: 'You suck! - 3',
           comment:'You are full of it!',
         })
       ]);

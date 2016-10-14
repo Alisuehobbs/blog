@@ -1,0 +1,59 @@
+<script src="/javascripts/comments.js"></script>
+
+<div class="container center-align">
+    <h1>COMMENTS!</h1>
+    <!-- <p>Let's talk about coding.</p> -->
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content black-text">
+                    <a href="/" class="card-title">{{post_title}}</a>
+                    <p>{{content}}</p>
+                </div>
+                <div class="date">
+                    {{date_created}} {{date_updated}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{#each post}}
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content black-text">
+                        <a href="/" class="card-title">{{comment_title}}</a>
+                        <p>{{comment}}</p>
+                    </div>
+                    <div class="date">
+                        {{date_created}} {{date_updated}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+
+    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Comment</a>
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Submit a Comment</h4>
+            <form class="col s12" method="post" action="/comment">
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <input id="title" type="text" class="validate" name="comment_title">
+                        <label for="title">Title</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="content" type="text" class="validate" name="comment">
+                        <label for="content">Comment:</label>
+                    </div>
+                </div>
+                <div class="container">
+                    <button class="waves-effect waves-light btn" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>

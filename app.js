@@ -15,7 +15,8 @@ const signup = require('./routes/signup');
 const login = require('./routes/login');
 const logout = require('./routes/logout');
 const posts = require('./routes/posts');
-const newpost = require('./routes/newpost')
+const newpost = require('./routes/newpost');
+const comment = require('./routes/comment')
 
 const app = express();
 
@@ -61,7 +62,8 @@ app.use('/signup', signup);
 app.use('/login', login);
 app.use('/logout', logout);
 app.use('/posts', posts);
-app.use('/newpost', newpost)
+app.use('/newpost', newpost);
+app.use('/comment', comment);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
