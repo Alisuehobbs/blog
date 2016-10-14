@@ -1,0 +1,21 @@
+<div class="container">
+    <h1>Blog Posts</h1>
+
+    <a class="btn waves-effect waves-light" href="/newpost">Create A New Post</a>
+
+    {{#each posts}}
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content black-text">
+                        <span class="card-title">{{title}}</span>
+                        <p>{{content}}</p>
+                    </div>
+                    <div class="date">
+                        {{date_created}} {{date_updated}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>
