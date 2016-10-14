@@ -2,13 +2,19 @@ const express = require('express');
 const router = express.Router();
 const knex = require('../db/knex.js');
 
+const authorize = (req, res, next) => {
+    if (!req.session.userInfo) {
+        res.render('error', {
+            message: "You need to be signed in to access the comments page."
+        });
+    }
+    next();
+}
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/:id', authorize, (req, res, next) => {
     knex('posts')
-        .join('comments', 'posts.id', 'comments.posts_id')
-        .where('posts.id', 1)
-        // .first()
+        .leftJoin('comments', 'posts.id', 'comments.posts_id')
+        .where('posts.id', req.params.id)
         .then((post) => {
             console.log('Post:', post);
             res.render('comment', {
@@ -23,16 +29,16 @@ router.get('/', function(req, res, next) {
         })
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', authorize, (req, res, next) => {
     knex('comments')
         .insert({
-            users_id: 1,
-            posts_id: 1,
+            users_id: req.session.userInfo.id,
+            posts_id: req.params.id,
             comment_title: req.body.comment_title,
             comment: req.body.comment
         })
         .then((comment) => {
-          console.log('Comment:', comment)
+          // console.log('Comment:', comment)
           res.redirect('/comment')
         })
 })

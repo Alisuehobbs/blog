@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
+
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -9,6 +13,7 @@ const knex = require('./db/knex');
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const configAuth = require('./public/config/auth');
+const Handlebars = require('handlebars');
 
 const routes = require('./routes/index');
 const signup = require('./routes/signup');
@@ -51,11 +56,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use(passport.initialize());
-// app.use(cookieSession({
-//     name: "alisblog",
-//     secret: process.env.SESSION_SECRET,
-//     secureProxy: app.get('env') === 'production'
-// }));
+app.use(cookieSession({
+    name: "alisblog",
+    secret: process.env.SESSION_SECRET,
+    secureProxy: app.get('env') === 'production'
+}));
 
 app.use('/', routes);
 app.use('/signup', signup);
