@@ -22,26 +22,38 @@ const logout = require('./routes/logout');
 const posts = require('./routes/posts');
 const newpost = require('./routes/newpost');
 const comment = require('./routes/comment')
+const db = require('./db/api')
 
 const app = express();
 
-//
-// passport.use(new FacebookStrategy({
-//         clientID: configAuth.clientID,
-//         clientSecret: configAuth.clientSecret,
-//         callbackURL: configAuth.callbackURL,
-//         profileFields: ['email', 'name', 'displayName', 'profileUrl'],
-//         enableProof: true,
-//         passReqToCallback: true
-//     },
-//
-//     function(req, accessToken, refreshToken, profile, cb1) {
-//         findOrCreate(profile, (err, user) => {
-//             req.session.userInfo = user;
-//             return cb1(null, user);
-//         });
-//     }
-// ))
+app.use(passport.initialize());
+
+passport.use(new FacebookStrategy({
+        clientID: configAuth.clientID,
+        clientSecret: configAuth.clientSecret,
+        callbackURL: configAuth.callbackURL,
+        profileFields: ['email', 'name', 'displayName', 'profileUrl'],
+        enableProof: true,
+        passReqToCallback: true
+    },
+
+    function(req, accessToken, refreshToken, profile, cb1) {
+        db.createOrLogin(profile, (err, user) => {
+            req.session.userInfo = user;
+            return cb1(null, user);
+        });
+    }
+))
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    User.findById(id, function(err, user) {
+        done(err, user);
+    });
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

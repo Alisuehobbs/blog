@@ -2,7 +2,13 @@
 
 <div class="container center-align">
 
+    <div class="right-align">
+        <a class="btn waves-effect waves-light" href="/posts">Blog</a>
+        <a class="btn waves-effect waves-light" href="/logout">Log Out</a>
+    </div>
+
     <h2>{{post_title}}</h2>
+    <h1>POST ID IS: {{posts_id}}</h1
 
     <div class="row">
         <div class="col s12">
@@ -10,11 +16,40 @@
                 <div class="card-content black-text">
                     <p>{{content}}</p>
                 </div>
-                <div class="date">
-                    {{date_created}} {{date_updated}}
+                <div class="card-action">
+                    <a class="waves-effect waves-light modal-trigger" href="#modal2">Edit</a>
+                    <a class="waves-effect waves-light modal-trigger" href="/comment/delete">Delete</a>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="modal2" class="modal">
+      <div class="modal-content">
+        <h4>Edit Your Post</h4>
+        <form class="col s12" id="editPost">
+          <div class="row">
+            <div class="input-field col s12 m6">
+              <input value="{{posts_id}}" id="posts_id" type="text" class="validate" name="id">
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12 m6">
+              <input value="{{post_title}}" id="edit_post_title" type="text" class="validate" name="comment_title">
+              <label for="title">Title</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input value="{{content}}" id="edit_content" type="text" class="validate" name="comment">
+              <label for="content">Content:</label>
+            </div>
+          </div>
+          <div class="container">
+            <button id="edit_Post" class="waves-effect waves-light btn" type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <h2>Comments:</h2>
@@ -26,9 +61,6 @@
                     <div class="card-content black-text">
                         <h5>{{comment_title}}</h5>
                         <p>{{comment}}</p>
-                    </div>
-                    <div class="date">
-                        {{date_created}} {{date_updated}}
                     </div>
                 </div>
             </div>
@@ -58,3 +90,6 @@
                 </div>
             </form>
         </div>
+    </div>
+
+</div>

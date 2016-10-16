@@ -12,6 +12,8 @@ const authorize = (req, res, next) => {
 }
 
 router.get('/:id', authorize, (req, res, next) => {
+    const allPromises = [];
+    allPromises.push(
     knex('posts')
         .leftJoin('comments', 'posts.id', 'comments.posts_id')
         .where('posts.id', req.params.id)
@@ -19,6 +21,7 @@ router.get('/:id', authorize, (req, res, next) => {
             console.log('Post:', post);
             res.render('comment', {
                 post: post,
+                posts_id: post[0].posts_id,
                 post_title: post[0].post_title,
                 comment_title: post[0].comment_title,
                 content: post[0].content,
@@ -26,7 +29,8 @@ router.get('/:id', authorize, (req, res, next) => {
                 date_created: post[0].created_at,
                 date_updated: post[0].updated_at
             });
-        })
+        }))
+        return Promise.all(allPromises)
 });
 
 router.post('/', authorize, (req, res, next) => {
@@ -38,9 +42,25 @@ router.post('/', authorize, (req, res, next) => {
             comment: req.body.comment
         })
         .then((comment) => {
-          // console.log('Comment:', comment)
-          res.redirect('/comment')
+            res.redirect('/comment')
         })
+})
+
+router.put('/:id', (req, res, next) => {
+    const updatedPostObject = {
+        users_id: req.session.userInfo.id,
+        post_title: req.body.title,
+        content: req.body.content
+    }
+    console.log('updatedPostObject', updatedPostObject);
+    knex('posts')
+        .where('id', req.params.id)
+        .update(updatedPostObject, '*')
+        .then((thing) => {
+          console.log('thing:', thing);
+          res.json({'response': 'post updated'})
+        })
+
 })
 
 module.exports = router;
