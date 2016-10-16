@@ -2,12 +2,19 @@ var express = require('express');
 var router = express.Router();
 const knex = require('../db/knex.js');
 
+const authorize = (req, res, next) => {
+    if (!req.session.userInfo) {
+        res.render('error', {
+            message: "You need to be signed in to access the comments page."
+        });
+    }
+    next();
+}
+
 router.get('/:id', (req, res, next) => {
     knex('comments')
         .where('id', req.params.id)
         .then((comment) => {
-            console.log('Comment:', comment);
-            console.log('posts_id:', comment[0].posts_id);
             res.render('editcomment', {
                 comment: comment,
                 id: comment[0].id,
@@ -26,8 +33,6 @@ router.put('/:id', (req, res, next) => {
         comment: req.body.comment
     }
 
-    console.log('updatedCommentObject:', updatedCommentObject);
-
     knex('comments')
         .where('id', req.params.id)
         .update(updatedCommentObject, '*')
@@ -35,6 +40,15 @@ router.put('/:id', (req, res, next) => {
           console.log('thing:', thing);
           res.json({'response': 'post updated'})
         })
+})
+
+router.delete('/:id', authorize, (req, res, next) => {
+  knex('comments')
+      .where('id', req.params.id)
+      .delete()
+      .then(() => {
+        res.json({'response': 'post deleted'})
+      })
 })
 
 module.exports = router;

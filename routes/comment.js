@@ -51,7 +51,7 @@ router.post('/', authorize, (req, res, next) => {
 })
 
 // edit post
-router.put('/:id', (req, res, next) => {
+router.put('/:id', authorize, (req, res, next) => {
     const updatedPostObject = {
         users_id: req.session.userInfo.id,
         post_title: req.body.title,
@@ -61,18 +61,19 @@ router.put('/:id', (req, res, next) => {
     knex('posts')
         .where('id', req.params.id)
         .update(updatedPostObject, '*')
-        .then((thing) => {
-          console.log('thing:', thing);
+        .then(() => {
           res.json({'response': 'post updated'})
         })
 })
 
 // delete post
-
-router.delete('/:id', (req, res, next) => {
-  knex('')
+router.delete('/:id', authorize, (req, res, next) => {
+  knex('posts')
+      .where('id', req.params.id)
+      .delete()
+      .then(() => {
+        res.json({'response': 'post deleted'})
+      })
 })
-
-// delete comment
 
 module.exports = router;

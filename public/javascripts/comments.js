@@ -4,14 +4,10 @@ $(document).ready(function() {
     $('.modal-trigger').leanModal();
 
         $('#edit_Post').click((event) => {
-          console.log('I was clicked!');
             event.preventDefault()
             const id = $('#posts_id').val()
             const title = $('#edit_post_title').val()
             const content = $('#edit_content').val()
-            console.log('Id:', id);
-            console.log('Title:', title);
-            console.log('Content:', content);
             $.ajax({
                 contentType: 'application/json',
                 url: `/comment/${id}`,
@@ -22,7 +18,6 @@ $(document).ready(function() {
                     content
                 }),
             }).done(() => {
-                console.log('made it to done')
                 window.location = `/comment/${id}`
             }).fail(err => {
                 console.log(err)
@@ -30,16 +25,11 @@ $(document).ready(function() {
         })
 
         $('#edit_Comment').click((event) => {
-          console.log('I was clicked!');
             event.preventDefault()
             const id = $('#comment_id').val()
             const posts_id = $('#posts_id').val()
             const title = $('#edit_comment_title').val()
             const comment = $('#edit_comment').val()
-            console.log('Id:', id);
-            console.log('Posts Id:', posts_id);
-            console.log('Title:', title);
-            console.log('Comment:', comment);
             $.ajax({
                 contentType: 'application/json',
                 url: `/editcomment/${id}`,
@@ -52,11 +42,40 @@ $(document).ready(function() {
                     comment
                 }),
             }).done(() => {
-                console.log('made it to done')
                 window.location = `/comment/${id}`
             }).fail(err => {
                 console.log(err)
             })
         })
+
+        $('#delete_post').click((event) => {
+            event.preventDefault()
+            console.log('I was clicked!');
+            const id = $('#posts_id').val()
+            $.ajax({
+              contentType: 'application/json',
+              url: `/comment/${id}`,
+              method: 'DELETE',
+            }).done(() => {
+              window.location = '/posts'
+            }).fail(err => {
+              console.log(err)
+            })
+          })
+
+        $('#delete_comment').click((event) => {
+            event.preventDefault()
+            console.log('I was clicked!');
+            const id = $('#comment_id').val()
+            $.ajax({
+              contentType: 'application/json',
+              url: `/editcomment/${id}`,
+              method: 'DELETE',
+            }).done(() => {
+              window.location = '/posts'
+            }).fail(err => {
+              console.log(err)
+            })
+          })
 
 });
