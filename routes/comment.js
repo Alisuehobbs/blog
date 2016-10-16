@@ -12,8 +12,7 @@ const authorize = (req, res, next) => {
 }
 
 router.get('/:id', authorize, (req, res, next) => {
-    const allPromises = [];
-    allPromises.push(
+  req.session.postID = req.params.id;
     knex('posts')
         .leftJoin('comments', 'posts.id', 'comments.posts_id')
         .where('posts.id', req.params.id)
@@ -30,18 +29,17 @@ router.get('/:id', authorize, (req, res, next) => {
                 date_created: post[0].created_at,
                 date_updated: post[0].updated_at
             });
-        }))
-        return Promise.all(allPromises)
+        })
 });
 
 router.post('/', authorize, (req, res, next) => {
     const newComment = {
       users_id: req.session.userInfo.id,
-      posts_id: req.body.id,
+      posts_id: req.session.postID,
       comment_title: req.body.comment_title,
       comment: req.body.comment
     }
-
+    
     knex('comments')
         .insert(newComment,'*')
         .then((comment) => {
