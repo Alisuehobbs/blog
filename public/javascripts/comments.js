@@ -72,7 +72,7 @@ $(document).ready(function() {
               url: `/editcomment/${id}`,
               method: 'DELETE',
             }).done(() => {
-              window.location = '/posts'
+              window.location = `/comment/${id}`
             }).fail(err => {
               console.log(err)
             })
