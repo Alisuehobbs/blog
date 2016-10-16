@@ -24,6 +24,7 @@ router.post('/', authorize, (req, res, next) => {
             content: req.body.content
         })
         .then((newpost) => {
+            console.log('newpost', newpost);
             res.redirect('posts')
         })
 })

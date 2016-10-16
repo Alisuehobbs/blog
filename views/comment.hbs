@@ -8,7 +8,6 @@
     </div>
 
     <h2>{{post_title}}</h2>
-    <h1>POST ID IS: {{posts_id}}</h1
 
     <div class="row">
         <div class="col s12">
@@ -30,7 +29,7 @@
         <form class="col s12" id="editPost">
           <div class="row">
             <div class="input-field col s12 m6">
-              <input value="{{posts_id}}" id="posts_id" type="text" class="validate" name="id">
+              <input value="{{posts_id}}" id="posts_id" type="text" class="validate" name="id" hidden>
             </div>
           </div>
           <div class="row">
@@ -59,13 +58,13 @@
             <div class="col s12">
                 <div class="card">
                     <div class="card-content black-text">
-                        <h5>{{comment_title}}</h5>
+                        <a href="/editcomment/{{id}}">{{comment_title}}</a>
                         <p>{{comment}}</p>
                     </div>
                 </div>
             </div>
         </div>
-    {{/each}}
+        {{/each}}
 
     <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Comment</a>
     <!-- Modal Structure -->
@@ -73,6 +72,9 @@
         <div class="modal-content">
             <h4>Submit a Comment</h4>
             <form class="col s12" method="post" action="/comment">
+              <div class="input-field col s12 m6">
+                <input value="{{posts_id}}" id="posts_id" type="text" class="validate" name="id" hidden>
+              </div>
                 <div class="row">
                     <div class="input-field col s12 m6">
                         <input id="title" type="text" class="validate" name="comment_title">

@@ -1,0 +1,59 @@
+<script src="/javascripts/comments.js"></script>
+
+
+<div class="container center-align">
+
+    <div class="right-align">
+        <a class="btn waves-effect waves-light" href="/posts">Blog</a>
+        <a class="btn waves-effect waves-light" href="/logout">Log Out</a>
+    </div>
+
+    <h2>{{comment_title}}</h2>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content black-text">
+                    <p>{{comment}}</p>
+                </div>
+                <div class="card-action">
+                    <a class="waves-effect waves-light modal-trigger" href="#modal3">Edit</a>
+                    <a class="waves-effect waves-light modal-trigger" href="/comment/delete">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <h4>Edit Your Comment</h4>
+            <form class="col s12" id="editComment">
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <input value="{{id}}" id="comment_id" type="text" class="validate" name="id" hidden>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <input value="{{posts_id}}" id="posts_id" type="text" class="validate" name="id" hidden>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <input value="{{comment_title}}" id="edit_comment_title" type="text" class="validate" name="comment_title">
+                        <label for="title">Title</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input value="{{comment}}" id="edit_comment" type="text" class="validate" name="comment">
+                        <label for="content">Content:</label>
+                    </div>
+                </div>
+                <div class="container">
+                    <button id="edit_Comment" class="waves-effect waves-light btn" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

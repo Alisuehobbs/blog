@@ -12,13 +12,13 @@ exports.seed = function(knex, Promise) {
         }),
         knex('comments').insert({
           users_id: 2,
-          posts_id: 1,
+          posts_id: 2,
           comment_title: 'You are okay. - 2',
           comment:'Cool story, bro.',
         }),
         knex('comments').insert({
           users_id: 3,
-          posts_id: 1,
+          posts_id: 3,
           comment_title: 'You suck! - 3',
           comment:'You are full of it!',
         })
