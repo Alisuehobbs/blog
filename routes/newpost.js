@@ -17,21 +17,24 @@ router.get('/', authorize, (req, res, next) => {
 });
 
 router.post('/', authorize, (req, res, next) => {
-
-
     const newPostObject = {
         users_id: req.session.userInfo.id,
         post_title: req.body.post_title,
         content: req.body.content
     }
 
-    knex('posts')
-        .insert(newPostObject, '*')
-        .then((newpost) => {
-            req.session.postID = newpost[0].id;
-            res.redirect('posts')
-        })
+    if (newPostObject.post_title === "" || newPostObject.content === "") {
+        res.send('Please enter both the title and content filed.')
+    } else {
 
+        knex('posts')
+            .insert(newPostObject, '*')
+            .then((newpost) => {
+                req.session.postID = newpost[0].id;
+                res.redirect('posts')
+            })
+
+    }
 })
 
 
