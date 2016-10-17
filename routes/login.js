@@ -14,7 +14,6 @@ router.post('/', (req, res, next) => {
         .where('email', req.body.email)
         .first()
         .then((user) => {
-          console.log(user);
             const passwordMatch = bcrypt.compareSync(req.body.password, user.hashed_password)
             if (passwordMatch == false) {
                 res.send('Bad email or password')

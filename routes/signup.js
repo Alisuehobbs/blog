@@ -22,37 +22,41 @@ router.get('/', function(req, res, next) {
 
 router.post('/', (req, res, next) => {
 
-    const hashed_password = bcrypt.hashSync(req.body.password, 8)
-
-    const newUserObj = {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        user_name: req.body.user_name,
-        image: req.body.image,
-        hashed_password: hashed_password
-    }
-
-    let allPromises = [];
-    allPromises.push(
-
     knex('users')
-        .insert(newUserObj, '*')
-        .then((users) => {
-            console.log('Users:', users);
-            const id = users[0].id
-            console.log('id is:', id);
-            knex('users')
-                .where('id', id)
-                .first()
-                .then((returnUserObject) => {
-                    req.session.userInfo = returnUserObject;
-                    res.redirect('posts')
+        .where('email', req.body.email)
+        .then((user) => {
+          console.log('user:' , user);
+            if (user.length === 0) {
+
+                const hashed_password = bcrypt.hashSync(req.body.password, 8)
+
+                const newUserObj = {
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name,
+                    email: req.body.email,
+                    user_name: req.body.user_name,
+                    image: req.body.image,
+                    hashed_password: hashed_password
+                }
+
+                knex('users')
+                    .insert(newUserObj, '*')
+                    .then((users) => {
+                        const id = users[0].id
+                        knex('users')
+                            .where('id', id)
+                            .first()
+                            .then((returnUserObject) => {
+                                req.session.userInfo = returnUserObject;
+                                res.redirect('posts')
+                            })
+                    })
+            } else {
+                res.render('error', {
+                    message: "A user with email already exists. Please login."
                 })
-        }))
-    return Promise.all(allPromises)
+            }
+        })
 })
-
-
 
 module.exports = router;
