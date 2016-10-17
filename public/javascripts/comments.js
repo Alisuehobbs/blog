@@ -50,8 +50,9 @@ $(document).ready(function() {
 
         $('#delete_post').click((event) => {
             event.preventDefault()
-            console.log('I was clicked!');
-            const id = $('#posts_id').val()
+            console.log('Delete was clicked!');
+            const id = $('#delete_posts_id').val()
+            console.log('id:', id);
             $.ajax({
               contentType: 'application/json',
               url: `/comment/${id}`,

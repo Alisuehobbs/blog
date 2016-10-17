@@ -3,7 +3,6 @@ const router = express.Router();
 const knex = require('../db/knex');
 
 const authorize = (req, res, next) => {
-    console.log('req.session.userInfo =', req.session.userInfo);
     if (!req.session.userInfo) {
         res.render('error', {
             message: "You need to be signed in to access the posts page."
@@ -17,7 +16,6 @@ router.get('/', authorize, (req, res, next) => {
   allPromises.push(
   knex('posts')
       .then((posts) => {
-        console.log('Posts:', posts);
           res.render('posts', {
             posts: posts,
             id: posts.id,

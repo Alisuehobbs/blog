@@ -17,16 +17,21 @@ router.get('/', authorize, (req, res, next) => {
 });
 
 router.post('/', authorize, (req, res, next) => {
+
+
+    const newPostObject = {
+        users_id: req.session.userInfo.id,
+        post_title: req.body.post_title,
+        content: req.body.content
+    }
+
     knex('posts')
-        .insert({
-            users_id: req.session.userInfo.id,
-            post_title: req.body.post_title,
-            content: req.body.content
-        })
+        .insert(newPostObject, '*')
         .then((newpost) => {
-            console.log('newpost', newpost);
+            req.session.postID = newpost[0].id;
             res.redirect('posts')
         })
+
 })
 
 

@@ -53,7 +53,9 @@ router.post('/', (req, res, next) => {
                     })
             } else {
                 res.render('error', {
-                    message: "A user with email already exists. Please login."
+                    message: "A user with email already exists. Please login.",
+                    button_title: "Log In",
+                    route: "/login"
                 })
             }
         })

@@ -21,7 +21,7 @@ router.get('/:id', authorize, (req, res, next) => {
             res.render('comment', {
                 post: post,
                 id: post[0].id,
-                posts_id: post[0].posts_id,
+                posts_id: req.session.postID,
                 post_title: post[0].post_title,
                 comment_title: post[0].comment_title,
                 content: post[0].content,
@@ -39,7 +39,7 @@ router.post('/', authorize, (req, res, next) => {
       comment_title: req.body.comment_title,
       comment: req.body.comment
     }
-    
+
     knex('comments')
         .insert(newComment,'*')
         .then((comment) => {
