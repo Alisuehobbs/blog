@@ -12,12 +12,11 @@ const authorize = (req, res, next) => {
 }
 
 router.get('/:id', authorize, (req, res, next) => {
-  req.session.postID = req.params.id;
+    req.session.postID = req.params.id;
     knex('posts')
         .leftJoin('comments', 'posts.id', 'comments.posts_id')
         .where('posts.id', req.params.id)
         .then((post) => {
-            console.log('Post:', post);
             res.render('comment', {
                 post: post,
                 id: post[0].id,
@@ -34,22 +33,23 @@ router.get('/:id', authorize, (req, res, next) => {
 
 router.post('/', authorize, (req, res, next) => {
     const newComment = {
-      users_id: req.session.userInfo.id,
-      posts_id: req.session.postID,
-      comment_title: req.body.comment_title,
-      comment: req.body.comment
+        users_id: req.session.userInfo.id,
+        posts_id: req.session.postID,
+        comment_title: req.body.comment_title,
+        comment: req.body.comment
     }
 
     knex('comments')
-        .insert(newComment,'*')
+        .insert(newComment, '*')
         .then((comment) => {
-          const id = comment[0].posts_id
+            const id = comment[0].posts_id
             res.redirect(`/comment/${id}`)
         })
 })
 
 // edit post
 router.put('/:id', authorize, (req, res, next) => {
+
     const updatedPostObject = {
         users_id: req.session.userInfo.id,
         post_title: req.body.title,
@@ -58,20 +58,34 @@ router.put('/:id', authorize, (req, res, next) => {
 
     knex('posts')
         .where('id', req.params.id)
-        .update(updatedPostObject, '*')
-        .then(() => {
-          res.json({'response': 'post updated'})
+        .then((post) => {
+            if (post[0].users_id === req.session.userInfo.id) {
+              console.log('I am authorized');
+                knex('posts')
+                    .where('id', post.id)
+                    .update(updatedPostObject, '*')
+                    .then(() => {
+                        res.json({
+                            'response': 'post updated'
+                        })
+                    })
+            } else {
+              console.log('I made it to else');
+              res.send("You are not authorized to edit this post.")
+            }
         })
 })
 
 // delete post
 router.delete('/:id', authorize, (req, res, next) => {
-  knex('posts')
-      .where('id', req.params.id)
-      .delete()
-      .then(() => {
-        res.json({'response': 'post deleted'})
-      })
+    knex('posts')
+        .where('id', req.params.id)
+        .delete()
+        .then(() => {
+            res.json({
+                'response': 'post deleted'
+            })
+        })
 })
 
 module.exports = router;

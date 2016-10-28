@@ -7,10 +7,10 @@ exports.seed = function(knex, Promise) {
         knex('users').insert({
           first_name: 'Ali',
           last_name: 'Hobbs',
-          email:'ali@ali.com',
+          email:'alisuehobbs@gmail.com',
           user_name:'alisuehobbs',
           image:'http://www.allaboutcheetahs.info/assets/img/cheetahs1.jpg',
-          hashed_password:'password1234',
+          hashed_password:'$2a$08$u5LOfImilTGn1JRPxZIRfeuz/6Wyo8UAiQFyvKo8PJ2Hm6p3ZsXjW ',
           admin_id: 1
         }),
         knex('users').insert({

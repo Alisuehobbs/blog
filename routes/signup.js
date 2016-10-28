@@ -36,7 +36,8 @@ router.post('/', (req, res, next) => {
                     email: req.body.email,
                     user_name: req.body.user_name,
                     image: req.body.image,
-                    hashed_password: hashed_password
+                    hashed_password: hashed_password,
+                    admin_id: 2
                 }
 
                 knex('users')
