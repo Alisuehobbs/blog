@@ -9,6 +9,7 @@ exports.up = function(knex) {
         table.string('user_name').notNullable().defaultTo('');
         table.string('image').notNullable();
         table.specificType('hashed_password', 'char(60)');
+        table.integer('admin_id').notNullable().references('id').inTable('admin_status').onDelete('CASCADE');
         table.timestamps(true, true);
     })
 }
